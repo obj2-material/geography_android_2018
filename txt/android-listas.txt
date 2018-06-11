@@ -151,6 +151,43 @@ los parámetros de Toast.makeText son: contexto (pasamos la activity), String a 
 
 
 
+Etapas siguientes - propuestas en este orden
+--------------------------------------------
+- Agregar al menos un TextView (yo diría dos) para que no nos olvidemos, y para que se vea que el ListView no tiene por qué estar solo.
+- Ir a una segunda Activity que muestre datos del item clickeado.
+  Acá hay que usar el getXXXExtra(key) del Intent.
+
+- Ir a buscar la data a un server. Para esto hay que contar (a ordenar)
+  - requests por HTTP que devuelven algo que no es HTML, para pedir info que pueda ser consumida por otro programa.
+  - formatos de intercambio de info: XML, JSON, YAML, etc..
+  - ver un poco JSON.
+  - Librerías y packages que vamos a usar
+    - volley: nos permiten hacer la llamada HTTP
+      OJO que hay que usar un RequestQueue. Mirar cómo lo hice en repo-geography, y la nota en 
+          https://developer.android.com/reference/android/app/Application.
+      Pero yo igual haría una subclase de Application, que en el onCreate le setee el contexto al Toolset (lo de "toolset" es mío, se le puede cambiar el nombre, la idea es que por ahora solamente tiene que mantener un RequestQueue pero podrían agregarse más cosas).
+      Después de ver 
+          https://developer.android.com/training/volley/requestqueue
+      creo que como lo hice no está tan mal.
+    - org.json: modelo de un JSON
+  - ATENTI
+    esto es asincrónico: el evento es "llegan los datos", se pasa una función que es la acción ante ese evento.
+  - Arquitectura propuesta: Provider / Analyzer / Data Object
+  - Cómo enganchamos la obtención de datos con las pantallas.
+    - lo que está hecho:
+      la Activity define un Consumer, que hace que la app se entere cuando la data está. Por lo tanto, todo lo que dependa de la data debe estar en la función. Hay que ver cómo se lleva esto con un Controller.
+      El Provider le manda al Consumer lo que recibe del Analyzer.
+    - se me ocurrió como alternativa usar un CursorAdapter, pero parece estar muuuuy acoplado a una interface con DB. Para averiguar.
+
+- Hasta acá lo que hace falta para el TP. Después se pueden agregar chiches.
+  - RowLayout con más de un campo, se puede usar SimpleAdapter.
+  - Adapter, y eventualmente RowLayout, definidos ad-hoc.
+  - Imágenes.
+  - ¿Qué más?
+
+
+
+
 Recursos
 --------
 En general
