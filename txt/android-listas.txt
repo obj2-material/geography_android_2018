@@ -1,0 +1,117 @@
+Manejo de listas en una aplicación Android
+==========================================
+
+Introducción
+------------
+Para que en una Activity aparezca una lista, agregamos un ListView.
+Repasemos los views que conocemos
+- TextView
+- Button
+- el nuevo: ListView
+
+En la definición de una lista, además del ListView que se agrega al layout, intervienen dos elementos adicionales
+1. un layout de fila: se pueden definir que en cada fila haya varios views. Ejemplos:
+    - dos TextView ordenados horizontalmente, el de arriba con un font más grande que el de abajo.
+    - un ImageView (que no vimos pero se imaginan qué muestra) a la izquierda con un TextView a la derecha.
+   La biblioteca de Android incluye varios layout de fila predefinidos, ver p.ej. 
+   https://docs.microsoft.com/en-us/xamarin/android/user-interface/layouts/list-view/customizing-appearance
+2. un Adapter, que es un objeto que debe implementar la interface android.widget.ListAdapter.
+   Otra vez, la biblioteca Android nos provee algunas implementaciones, que nos van a servir para casos sencillos.
+
+Por suerte, el enganche entre ListView y Adapter se puede hacer mediante un controller, usando data binding como hicimos en los ejemplos iniciales. Para eso el ListView tiene una property llamada android:adapter.
+
+
+
+Etapa 1: una pantalla con una lista de Strings
+----------------------------------------------
+Creamos un nuevo proyecto cuya actividad inicial va a mostrar una lista de Strings.
+Una vez que tenemos el proyecto creado, qué hay que hacer
+
+1. creamos la clase del controller con
+    - un constructor que recibe una Activity y se la guarda en un atributo (igual que los controller que hicimos para nuestra primer app)
+
+    - un método que devuelva una lista de Strings. 
+      En el ejemplo se supone que los números representan años, por eso llamamos a este método crearAnios().
+      Para "pasar" cada número de año a String, usamos String.valueOf(num).
+
+    - un método que crea y devuelve un nuevo Adapter. Va el código del ejemplo:
+        public ArrayAdapter<String> getListaAniosAdapter() {
+          return new ArrayAdapter<String>(
+            this.activity, 
+            android.R.layout.simple_list_item_1, 
+            this.crearAnios()
+          );
+      }
+      Usamos la clase ArrayAdapter, que viene con Android. Esta clase hay que parametrizarla con la clase del objeto que se va a renderizar en cada fila, en este caso String. El constructor que usamos (tiene varios, se pueden mirar) lleva tres parámetros
+        - el "contexto" donde se va a renderizar la lista, que es la Activity
+        - el id del layout que se usa para cada fila. 
+          En este caso usamos el más sencillo de los que vienen con Android, que muestra un solo TextView, el id es android.R.layout.simple_list_item_1.
+          De paso conocemos a android.R, que es una bolsa de constantes análoga a R, para acceder a recursos que provee Android. La interfaz R se refiere a recursos que definimos en la aplicación.
+        - la lista de Strings que hay que mostrar. Usamos el método que devuelve una lista de String, indicado en el punto anterior.
+
+
+2. En la clase de la Activity
+    - agregamos un atributo controller.
+
+    - definimos el método onCreate, igual que el de la activity principal del primer proyecto:
+      - invodfca al super
+      - crea el controller y lo asigna al atributo.
+      - crea el binding usando DataBindingUtil.setContentView, pasando por parámetro la activity y el layout de la activity.
+      - se setea el controller al binding recién creado.
+
+
+3. En el layout de la Activity
+    - agregamos un layout exterior, nos queda el ConstraintLayout adentro. Igual que en los layouts del primer proyecto.
+    - agregamos el tag data y adentro una variable con el tipo del controller. Otra vez, igual que en los layouts del primer proyecto.
+    - agregamos la ListView de esta forma:
+        <ListView
+            android:id="@+id/listaAnios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adapter="@{controller.listaAniosAdapter}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+      Notar que el único atributo que no es general para todas las View es android:adapter.
+      En este caso, indicamos que le pida el adapter al Controller mediante la propiedad listaAniosAdapter, que va a matchear con el método getListaAniosAdapter().
+
+Listo, si hicimos todo bien, deberíamos poder probar que se abra una app que muestra una lista de números.
+
+---------
+Por favor
+---------
+En la prueba que haga cada uno, que los String tengan algún significado. Recomendamos que sea una lista de nombres de países.
+
+
+
+Recursos
+--------
+En general
+http://www.vogella.com/tutorials/AndroidListView/article.html
+mucha - mucha - mucha data, y hasta se entiende
+Peeeero no trabaja con data binding.
+
+Standard row layouts
+https://robgibbens.com/androids-built-in-list-item-layouts/
+https://docs.microsoft.com/en-us/xamarin/android/user-interface/layouts/list-view/customizing-appearance
+(cambiando a los nuevos nombres, claro)
+
+Toast
+https://developer.android.com/guide/topics/ui/notifiers/toasts
+
+getTag() / setTag(Object) y variantes con key
+buscar en https://developer.android.com/reference/android/view/View
+
+SimpleAdapter
+https://developer.android.com/reference/android/widget/SimpleAdapter
+https://developer.android.com/reference/android/widget/SimpleAdapter.ViewBinder
+
+La idea de data binding parece no aplicarse, al menos en forma sencilla. 
+Algunos links sobre formas de aplicar binding o construir alternativas
+https://proandroiddev.com/exploring-android-data-binding-library-ff467171c756
+https://medium.com/google-developers/android-data-binding-recyclerview-db7c40d9f0e4
+
+Sobre data binding en general
+https://www.captechconsulting.com/blogs/android-data-binding-tutorial
+
