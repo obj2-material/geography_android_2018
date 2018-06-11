@@ -1,12 +1,9 @@
 package ar.edu.unq.cpi.geographydata.view;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import ar.edu.unq.cpi.geographydata.R;
@@ -37,7 +34,7 @@ public class InfoAnios extends AppCompatActivity {
             String mensaje = "El año " + anio.getNumeroAsString()
                     + (anio.isBisiesto() ? " es " : " no es ")
                     + "bisiesto ";
-            Toast toast = Toast.makeText(InfoAnios.this, mensaje, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, mensaje, Toast.LENGTH_SHORT);
             toast.show();
         });
 

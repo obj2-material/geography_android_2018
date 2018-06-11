@@ -81,7 +81,73 @@ Listo, si hicimos todo bien, deberíamos poder probar que se abra una app que mu
 ---------
 Por favor
 ---------
-En la prueba que haga cada uno, que los String tengan algún significado. Recomendamos que sea una lista de nombres de países.
+En la prueba que haga cada uno, que los String tengan algún significado. En lo que sigue, se asume que es una lista de nombres de países.
+
+
+
+Etapa 2: agregamos objetos de negocio
+-------------------------------------
+El objetivo es que la lista, en lugar de mostrar una lista de Strings, muestre una lista de instancias de una clase Pais. Pongamos dos atributos en esta clase, nombre y población, con sus getters, y un constructor al que se le pasan los dos valores, algo así:
+    public Pais(String nombre, long poblacion) {
+        this.nombre = nombre
+        this.poblacion = poblacion
+    }
+
+Conviene que el controller tenga en un atributo la lista de países que hay que mostrar. Entonces pasamos de
+    public List<String> getPaises()
+a
+    public List<Pais> getPaises()
+
+¿Cómo se aviva el ArrayAdapter que a cada país hay que pedirle el nombre? No hay forma de decirle "mostrá esto". Si los objetos que recibe no son String, lo que se muestra es el resultado de toString(). Entonces, lo que hay que hacer es agregar este método en la clase Pais
+    public String toString() { return this.nombre() }
+
+
+
+Etapa 3: acción ante un evento
+------------------------------
+Ahora hagamos que cuando se hace click sobre un nombre de país, aparezca un mensajito abajo que diga "La población de <nombre> es <poblacion>".
+Para esto hay que agregarle al ListView, un listener para el evento "se hizo click sobre un ítem".
+
+Esto lo hacemos desde el onCreate de la Activity:
+    // agregamos un listener para cuando se hace click sobre una fila en el list view
+    // para esto me tenqo que conseguir una referencia al listView
+    ListView listaAnios = this.findViewById(R.id.listaAnios);
+    // y aqui vamos. ¡Se puede usar una función!!,
+    // análogo a lo en Wicket hacemos con una clase anónima.
+    listaAnios.setOnItemClickListener((listView, viewFilaClickeada, position, id) -> {
+        ... acá hacer lo que se desee ...
+    });
+
+Nótese que se puede pasar una función anónima (o "lambda expression"). La "forma larga" (lo que propone el editor del AndroidStudio) es así:
+    listaAnios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> listView, View viewFilaClickeada, int position, long id) {
+
+        }
+    });
+
+Cualquiera de las dos formas sirve. Los parámetros son:
+- listView: el ListView enterito
+- viewFilaClickeada: eso, el View de la fila a la que se hizo click. El tipo de esto depende de cómo se haya configurado el Adapter. Como le pusimos android.R.layout.simple_list_item_1, entonces es un TextView.
+- position: la posición del ítem clickeado en la lista. Por lo que voy viendo, la posición se usa bastante en el manejo de listas.
+- id: honestamente, no sé qué es.
+
+OK, pero lo que queremos es el país. Por ahora se lo pedimos al controller; para esto nos sirve tener una referencia al controller desde la activity.
+        Pais paisClickeado = controller.getPais(position);
+... claro, para esto le tenemos que agregar el método getPais(int position) al controller ...
+
+Lo que vamos a hacer es que aparezca lo que en Android parecen llamar un Toast:
+    https://developer.android.com/guide/topics/ui/notifiers/toasts
+Este es una notificación que aparece abajo un ratito, y después se va sola. Ver los ejemplos en la página que acabo de referenciar.
+Al Toast hay que crearlo, y después hacerle show(). Va el código completo del listener: 
+    listaAnios.setOnItemClickListener((listView, viewFilaClickeada, position, id) -> {
+        Pais paisClickeado = controller.getPais(position);
+        String mensaje = ... lo que se vaya a mostrar a partir del país clickeado ...
+        Toast toast = Toast.makeText(this, mensaje, Toast.LENGTH_SHORT);
+        toast.show();
+    });
+
+los parámetros de Toast.makeText son: contexto (pasamos la activity), String a mostrar, una constante que dice si mostrarlo mucho o poco tiempo.
 
 
 
@@ -115,3 +181,12 @@ https://medium.com/google-developers/android-data-binding-recyclerview-db7c40d9f
 Sobre data binding en general
 https://www.captechconsulting.com/blogs/android-data-binding-tutorial
 
+
+
+Keyboard shortcuts Android Studio
+---------------------------------
+- Alt-Ins new
+- Ctrl-B saltar a definición.
+- Ctrl-N buscar clase.
+- Alt-Left/Right salta entre los editores en el orden en que están.
+- Ctrl-Alt-O limpia los imports superfluos.
