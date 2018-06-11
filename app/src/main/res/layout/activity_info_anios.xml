@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable name="controller" type="ar.edu.unq.cpi.geographydata.InfoAniosController"/>
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,6 +16,7 @@
             android:id="@+id/listaAnios"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:adapter="@{controller.listaAniosAdapter}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
