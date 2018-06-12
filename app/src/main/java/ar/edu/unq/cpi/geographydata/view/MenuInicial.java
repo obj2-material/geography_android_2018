@@ -8,6 +8,7 @@ import ar.edu.unq.cpi.geographydata.R;
 import ar.edu.unq.cpi.geographydata.databinding.ActivityMenuInicialBinding;
 
 public class MenuInicial extends AppCompatActivity {
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         // inicializacion de la Activity y del controller
         super.onCreate(savedInstanceState);

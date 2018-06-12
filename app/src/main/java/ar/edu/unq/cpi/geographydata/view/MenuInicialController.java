@@ -7,4 +7,5 @@ public class MenuInicialController extends Controller<MenuInicial> {
 
     public void listaAniosUnTexto() { this.saltarAActividad(InfoAnios.class); }
     public void listaAniosDosTextos() { this.saltarAActividad(InfoAniosDosTextos.class); }
+    public void imagenMasTextos() { this.saltarAActividad(ImagenMasTextos.class); }
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<!--
+    <data>
+        <variable name="controller" type="ar.edu.unq.cpi.geographydata.view.MenuInicialController"/>
+    </data>
+-->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/unaImagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="40dp"
+            android:src="@drawable/escudo_river"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/textoDeArriba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Año 2015"
+            android:layout_marginLeft="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintLeft_toRightOf="@id/unaImagen"
+            app:layout_constraintTop_toTopOf="@id/unaImagen"
+            />
+
+        <TextView
+            android:id="@+id/textoDeAbajo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Campeón de América"
+            android:layout_marginTop="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintLeft_toLeftOf="@id/textoDeArriba"
+            app:layout_constraintTop_toBottomOf="@id/textoDeArriba"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

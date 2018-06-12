@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".view.InfoAnios" />
         <activity android:name=".view.InfoAniosDosTextos" />
+        <activity android:name=".view.ImagenMasTextos" />
     </application>
 
 </manifest>
