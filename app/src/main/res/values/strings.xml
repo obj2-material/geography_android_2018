@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Info sobre años</string>
+    <string name="app_name">Pruebas sobre listas</string>
+    <string name="unItemPorFila">Un texto por fila</string>
+    <string name="dosTextosPorFila">Dos textos por fila</string>
 </resources>
